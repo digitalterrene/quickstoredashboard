@@ -1,0 +1,136 @@
+/* Top toolbar (navbar-like) */
+.gjs-pn-commands {
+  @apply bg-gray-900 h-14 w-fit hidden text-white border-b border-gray-600;
+}
+
+/* Right sidebar */
+/* Right sidebar container */
+.gjs-pn-options,
+.gjs-pn-panels {
+  background-color: #2d3748 !important; /* Sidebar background */
+  color: #ffffff !important; /* Sidebar text color */
+  border-left: 1px solid #4a5568 !important;
+}
+
+/* Right sidebar panel titles */
+.gjs-pn-title {
+  background-color: #2d3748 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #4a5568 !important;
+}
+.gjs-pn {
+  background-color: #2d3748 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #4a5568 !important;
+}
+/* Panel buttons or tabs */
+.gjs-pn-buttons {
+  background-color: #2d3748 !important;
+  color: #ffffff !important;
+}
+
+/* Panel inner content (traits, style manager, blocks, etc.) */
+.gjs-pn-inner,
+.gjs-sm-sectors {
+  background-color: #2d3748 !important;
+  color: #ffffff !important;
+}
+
+/* Specific styles panel */
+.gjs-sm-header,
+.gjs-sm-sector .gjs-sm-title,
+.gjs-sm-property {
+  background-color: #2d3748 !important;
+  color: #ffffff !important;
+}
+
+/* Dropdowns (select elements) */
+select {
+  background-color: #1a202c !important;
+  color: #ffffff !important;
+  border: 1px solid #4a5568 !important;
+}
+
+/* Inputs inside the panels */
+input {
+  background-color: #1a202c !important;
+  color: #ffffff !important;
+  border: 1px solid #4a5568 !important;
+}
+
+/* Labels inside panels */
+.gjs-sm-label {
+  color: #ffffff !important;
+}
+
+/* Range sliders */
+input[type="range"] {
+  background-color: #4a5568 !important;
+}
+
+/* Style Manager Sectors (expandable sections) */
+.gjs-sm-sector {
+  background-color: #2d3748 !important;
+  border-bottom: 1px solid #4a5568 !important;
+}
+
+/* Block Manager (right sidebar block section) */
+.gjs-block {
+  background-color: #2d3748 !important;
+  border: 1px solid #4a5568 !important;
+  color: #ffffff !important;
+}
+
+/* Traits section (custom attributes area) */
+.gjs-trt-traits {
+  background-color: #2d3748 !important;
+  color: #ffffff !important;
+}
+
+/* Individual trait fields */
+.gjs-trt-trait {
+  background-color: #2d3748 !important;
+  color: #ffffff !important;
+  border: 1px solid #4a5568 !important;
+}
+/* Right sidebar container root */
+.gjs-cv-canvas__frames,
+.gjs-pn-panels,
+.gjs-pn-options,
+.gjs-pn-views-container {
+  background-color: #2d3748 !important; /* Your desired background color */
+  color: #ffffff !important; /* Text color */
+}
+
+/* Right sidebar toolbar wrapper */
+.gjs-pn-views,
+.gjs-pn-view {
+  background-color: #2d3748 !important; /* Apply to inner sections */
+}
+
+/* Sidebar general panel container */
+.gjs-sidebar,
+.gjs-pn-views-container,
+.gjs-sm-properties,
+.gjs-pn-options {
+  background-color: #2d3748 !important; /* Your custom color */
+
+  color: #ffffff !important;
+}
+
+/* Style for blocks and sections */
+.gjs-blocks-cs {
+  background-color: #2d3748 !important;
+  border-left: 1px solid #4a5568 !important;
+}
+
+/* Panel toggles */
+.gjs-pn-btn {
+  background-color: #1a202c !important;
+  color: #ffffff !important;
+
+  border: none !important;
+}
+.gjs-sm-sector {
+  @apply bg-gray-800 border-b border-gray-700;
+}

@@ -1,0 +1,60 @@
+/* Top toolbar (navbar-like) */
+.gjs-pn-commands {
+  @apply bg-gray-900 h-14 mb-10 w-full text-white border-b border-gray-600;
+}
+
+/* Right sidebar container */
+.gjs-pn-options,
+.gjs-pn-panels {
+  background-color: #2d3748 !important; /* Sidebar background */
+  color: #ffffff !important; /* Sidebar text color */
+  border-left: 1px solid #4a5568 !important;
+  padding: 10px; /* Ensure padding within the sidebar */
+}
+
+/* Panel titles */
+.gjs-pn-title {
+  background-color: #2d3748 !important;
+  color: #ffffff !important;
+  border-bottom: 1px solid #4a5568 !important;
+  padding: 5px; /* Add padding to panel titles */
+}
+
+/* Canvas area */
+.gjs-cv-canvas {
+  background-color: #f7fafc !important; /* Canvas background color */
+  padding: 50px !important; /* Apply padding to canvas area */
+  border: none !important; /* Remove border */
+  box-sizing: border-box; /* Ensure padding is included in total width/height */
+}
+
+/* Frame area */
+.gjs-frame {
+  background-color: #f7fafc !important; /* Ensure iframe's background is light */
+}
+
+/* Device selector buttons */
+.device-selector {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+}
+
+/* Device buttons */
+.device-button {
+  background-color: #1a202c;
+  color: #ffffff;
+  border: none;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.device-button:hover {
+  background-color: #2d3748;
+}
+
+.device-button.active {
+  background-color: #4a5568;
+}
