@@ -10,7 +10,7 @@ import { cookies } from "next/headers";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Vetueal Stores",
+  title: "Quick Store Dashboard",
   description: "All you can buy",
 };
 
