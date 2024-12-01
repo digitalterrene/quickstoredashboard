@@ -31,14 +31,7 @@ export default function CustomersPage({
   response: ResponseType;
 }) {
   const { addItem, closeSidenav, isSidenavOpen } = useSideNavInputs();
-  useEffect(() => {
-    if (response?.response === "error") {
-      toast.error(`${response?.message}`);
-    }
-    setTimeout(() => {
-      toast.dismiss();
-    }, 6000);
-  }, [response?.response]);
+
   console.log({ customers: response?.data });
   const stats = {
     males: calculateTotalMaleCustomers(response?.data || []),

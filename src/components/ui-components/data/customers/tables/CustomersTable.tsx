@@ -18,6 +18,7 @@ import {
   BsGenderMale,
 } from "react-icons/bs";
 import { IoPrintOutline } from "react-icons/io5";
+import DataNotFound from "@/components/misc-components/DataNotFound";
 
 export default function CustomersTable({
   customers,
@@ -340,281 +341,283 @@ export default function CustomersTable({
                     </div>
                   </div>
                 </div>
-
-                <table className="  divide-y w-full divide-gray-200 dark:divide-neutral-700">
-                  <thead className="bg-gray-50 dark:bg-neutral-800">
-                    <tr>
-                      <th scope="col" className="pl-3 py-3 text-start">
-                        <input
-                          type="checkbox"
-                          checked={
-                            selectedIDs?.length === currentCustomers?.length
-                          }
-                          onChange={handleSelectAll}
-                          className="shrink-0 mt-0.5 h-4 w-4 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                          id="hs-default-checkbox"
-                        />
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-start">
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Customer
-                          </span>
-                        </div>
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-start">
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Employment
-                          </span>
-                        </div>
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-start">
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Gender
-                          </span>
-                        </div>
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-start">
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Rating
-                          </span>
-                        </div>
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-start">
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Category
-                          </span>
-                        </div>
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 whitespace-nowrap py-3 text-start"
-                      >
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Purchases
-                          </span>
-                        </div>
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 whitespace-nowrap py-3 text-start"
-                      >
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Value
-                          </span>
-                        </div>
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 whitespace-nowrap text-start"
-                      >
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Date Created
-                          </span>
-                        </div>
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-start"></th>
-                    </tr>
-                  </thead>
-
-                  <tbody className="divide-y overflow-x-auto divide-gray-200 dark:divide-neutral-700">
-                    {currentCustomers?.map(
-                      ({
-                        name,
-                        lastname,
-                        email,
-                        position,
-                        company,
-                        gender,
-                        image,
-                        value,
-                        tagline,
-                        description,
-                        products,
-                        orders,
-                        rating,
-                        category,
-                        invoices,
-                        purchases,
-                        reviews,
-                        publisher,
-                        created_at,
-                        _id,
-                      }) => (
-                        <tr key={_id}>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="p-3  py-3">
-                              <label
-                                htmlFor="hs-at-with-checkboxes-1"
-                                className="flex"
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={selectedIDs.includes(_id || "")}
-                                  onChange={(e) =>
-                                    handleSelectItem(e, _id || "")
-                                  }
-                                  className="shrink-0 mt-0.5 h-4 w-4 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                                  id="hs-default-checkbox"
-                                />
-                                <span className="sr-only">Checkbox</span>
-                              </label>
-                            </div>
-                          </td>
-                          <td className="size-px px-6 whitespace-nowrap">
-                            <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
-                              <div className="flex items-center gap-x-3">
-                                <div
-                                  style={{
-                                    backgroundImage: `url(${
-                                      image ||
-                                      "https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
-                                    })`,
-                                  }}
-                                  className="bg-red-900 bg-center bg-contain rounded-full shadow-xl p-2 w-10 h-10"
-                                ></div>
-                                <div className=" ">
-                                  <span className="block capitalize text-sm font-semibold text-gray-800 dark:text-neutral-200">
-                                    {name || "Name"}
-                                  </span>
-                                  <span className="block w-32 truncate text-sm text-gray-500 dark:text-neutral-500">
-                                    {email || "email"}
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="h-px w-72 whitespace-nowrap">
-                            <div className="px-6 capitalize py-3">
-                              <span className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
-                                {position || "position"}
-                              </span>
-                              <span className="block text-sm text-gray-500 dark:text-neutral-500">
-                                {company || ""}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-3">
-                              <span className="py-1 capitalize px-1.5 inline-flex items-center gap-x-1 text-xs font-medium   dark:bg-teal-500/10 dark:text-teal-500">
-                                <span className="p-1.5 rounded mr-3 bg-gray-100 shadow">
-                                  {gender === "male" ? (
-                                    <BsGenderMale className="text-xl text-blue-500" />
-                                  ) : (
-                                    <BsGenderFemale className="text-xl text-[#FF224D]" />
-                                  )}
-                                </span>
-                                {gender || "gender"}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-3">
-                              <div className="flex items-center w-24 gap-x-3">
-                                <span className="text-xs text-gray-500 dark:text-neutral-500">
-                                  {rating || 0}/5
-                                </span>
-                                <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700">
-                                  <div
-                                    className="flex flex-col justify-center overflow-hidden bg-green-500 dark:bg-neutral-200"
-                                    style={{
-                                      width: `${
-                                        (rating && (rating / 5) * 100) || 0
-                                      }%`,
-                                    }}
-                                  ></div>
-                                </div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-3">
-                              <span className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium   rounded-full capitalize border bg-gray-50 border-pink-200 shadow">
-                                {category || "category"}
-                              </span>
-                            </div>
-                          </td>
-
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-3">
-                              <span className="text-sm text-gray-500 dark:text-neutral-500">
-                                $ {purchases || 0}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-1.5">
-                              <a
-                                className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500"
-                                href="#"
-                              >
-                                $ {value || 0}
-                              </a>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-3">
-                              <span className="text-sm text-gray-500 dark:text-neutral-500">
-                                {created_at || "created at"}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="size-px   whitespace-nowrap p-6 align-top">
-                            <div className=" ">
-                              <div className=" gap-3 flex justify-start  ">
-                                <button
-                                  data-hs-overlay="#hs-overlay-body-scrolling"
-                                  type="button"
-                                  onClick={() => {
-                                    setAddItem("edit_customer");
-                                    setSidenavInputs({
-                                      name,
-                                      lastname,
-                                      email,
-                                      position,
-                                      company,
-                                      gender,
-                                      image,
-                                      value,
-                                      tagline,
-                                      description,
-                                      customers,
-                                      orders,
-                                      rating,
-                                      category,
-                                      invoices,
-                                      purchases,
-                                      reviews,
-                                      publisher,
-                                      created_at,
-                                      _id,
-                                    });
-                                    openSidenav();
-                                  }}
-                                  className="block"
+                {currentCustomers?.length === 0 ? (
+                  <DataNotFound data="customers" />
+                ) : (
+                  <table className="  divide-y w-full divide-gray-200 dark:divide-neutral-700">
+                    <thead className="bg-gray-50 dark:bg-neutral-800">
+                      <tr>
+                        <th scope="col" className="pl-3 py-3 text-start">
+                          <input
+                            type="checkbox"
+                            checked={
+                              selectedIDs?.length === currentCustomers?.length
+                            }
+                            onChange={handleSelectAll}
+                            className="shrink-0 mt-0.5 h-4 w-4 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                            id="hs-default-checkbox"
+                          />
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-start">
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Customer
+                            </span>
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-start">
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Employment
+                            </span>
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-start">
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Gender
+                            </span>
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-start">
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Rating
+                            </span>
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-start">
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Category
+                            </span>
+                          </div>
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 whitespace-nowrap py-3 text-start"
+                        >
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Purchases
+                            </span>
+                          </div>
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 whitespace-nowrap py-3 text-start"
+                        >
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Value
+                            </span>
+                          </div>
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 whitespace-nowrap text-start"
+                        >
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Date Created
+                            </span>
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-start"></th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y overflow-x-auto divide-gray-200 dark:divide-neutral-700">
+                      {currentCustomers?.map(
+                        ({
+                          name,
+                          lastname,
+                          email,
+                          position,
+                          company,
+                          gender,
+                          image,
+                          value,
+                          tagline,
+                          description,
+                          products,
+                          orders,
+                          rating,
+                          category,
+                          invoices,
+                          purchases,
+                          reviews,
+                          publisher,
+                          created_at,
+                          _id,
+                        }) => (
+                          <tr key={_id}>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="p-3  py-3">
+                                <label
+                                  htmlFor="hs-at-with-checkboxes-1"
+                                  className="flex"
                                 >
-                                  <span className="  py-1.5">
-                                    <span className="py-1 px-2 inline-flex justify-center items-center gap-2 rounded-lg border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
-                                      <FiEdit className="text-lg" />
-                                      Edit
-                                    </span>
-                                  </span>
-                                </button>
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedIDs.includes(_id || "")}
+                                    onChange={(e) =>
+                                      handleSelectItem(e, _id || "")
+                                    }
+                                    className="shrink-0 mt-0.5 h-4 w-4 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                                    id="hs-default-checkbox"
+                                  />
+                                  <span className="sr-only">Checkbox</span>
+                                </label>
                               </div>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    )}
-                  </tbody>
-                </table>
+                            </td>
+                            <td className="size-px px-6 whitespace-nowrap">
+                              <div className="ps-6 lg:ps-3 xl:ps-0 pe-6 py-3">
+                                <div className="flex items-center gap-x-3">
+                                  <div
+                                    style={{
+                                      backgroundImage: `url(${
+                                        image ||
+                                        "https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
+                                      })`,
+                                    }}
+                                    className="bg-red-900 bg-center bg-contain rounded-full shadow-xl p-2 w-10 h-10"
+                                  ></div>
+                                  <div className=" ">
+                                    <span className="block capitalize text-sm font-semibold text-gray-800 dark:text-neutral-200">
+                                      {name || "Name"}
+                                    </span>
+                                    <span className="block w-32 truncate text-sm text-gray-500 dark:text-neutral-500">
+                                      {email || "email"}
+                                    </span>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="h-px w-72 whitespace-nowrap">
+                              <div className="px-6 capitalize py-3">
+                                <span className="block text-sm font-semibold text-gray-800 dark:text-neutral-200">
+                                  {position || "position"}
+                                </span>
+                                <span className="block text-sm text-gray-500 dark:text-neutral-500">
+                                  {company || ""}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-3">
+                                <span className="py-1 capitalize px-1.5 inline-flex items-center gap-x-1 text-xs font-medium   dark:bg-teal-500/10 dark:text-teal-500">
+                                  <span className="p-1.5 rounded mr-3 bg-gray-100 shadow">
+                                    {gender === "male" ? (
+                                      <BsGenderMale className="text-xl text-blue-500" />
+                                    ) : (
+                                      <BsGenderFemale className="text-xl text-[#FF224D]" />
+                                    )}
+                                  </span>
+                                  {gender || "gender"}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-3">
+                                <div className="flex items-center w-24 gap-x-3">
+                                  <span className="text-xs text-gray-500 dark:text-neutral-500">
+                                    {rating || 0}/5
+                                  </span>
+                                  <div className="flex w-full h-1.5 bg-gray-200 rounded-full overflow-hidden dark:bg-neutral-700">
+                                    <div
+                                      className="flex flex-col justify-center overflow-hidden bg-green-500 dark:bg-neutral-200"
+                                      style={{
+                                        width: `${
+                                          (rating && (rating / 5) * 100) || 0
+                                        }%`,
+                                      }}
+                                    ></div>
+                                  </div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-3">
+                                <span className="py-1 px-1.5 inline-flex items-center gap-x-1 text-xs font-medium   rounded-full capitalize border bg-gray-50 border-pink-200 shadow">
+                                  {category || "category"}
+                                </span>
+                              </div>
+                            </td>
+
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-3">
+                                <span className="text-sm text-gray-500 dark:text-neutral-500">
+                                  $ {purchases || 0}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-1.5">
+                                <a
+                                  className="inline-flex items-center gap-x-1 text-sm text-blue-600 decoration-2 hover:underline font-medium dark:text-blue-500"
+                                  href="#"
+                                >
+                                  $ {value || 0}
+                                </a>
+                              </div>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-3">
+                                <span className="text-sm text-gray-500 dark:text-neutral-500">
+                                  {created_at || "created at"}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="size-px   whitespace-nowrap p-6 align-top">
+                              <div className=" ">
+                                <div className=" gap-3 flex justify-start  ">
+                                  <button
+                                    data-hs-overlay="#hs-overlay-body-scrolling"
+                                    type="button"
+                                    onClick={() => {
+                                      setAddItem("edit_customer");
+                                      setSidenavInputs({
+                                        name,
+                                        lastname,
+                                        email,
+                                        position,
+                                        company,
+                                        gender,
+                                        image,
+                                        value,
+                                        tagline,
+                                        description,
+                                        customers,
+                                        orders,
+                                        rating,
+                                        category,
+                                        invoices,
+                                        purchases,
+                                        reviews,
+                                        publisher,
+                                        created_at,
+                                        _id,
+                                      });
+                                      openSidenav();
+                                    }}
+                                    className="block"
+                                  >
+                                    <span className="  py-1.5">
+                                      <span className="py-1 px-2 inline-flex justify-center items-center gap-2 rounded-lg border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
+                                        <FiEdit className="text-lg" />
+                                        Edit
+                                      </span>
+                                    </span>
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </table>
+                )}
 
                 <div className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-neutral-700">
                   <div className="max-w-sm flex border rounded-lg p-2 py-1 gap-2 items-center  ">

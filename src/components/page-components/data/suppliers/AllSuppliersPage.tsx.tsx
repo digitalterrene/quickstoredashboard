@@ -9,8 +9,8 @@ export default function AllSuppliersPage({
   suppliers_configurations_response,
 }: any) {
   const wc_suppliers_configurations: any =
-    suppliers_configurations_response.find(
-      (config: any) => config.supplier === "woocommerce"
+    suppliers_configurations_response?.find(
+      (config: any) => config?.supplier === "woocommerce"
     );
   return (
     <div>

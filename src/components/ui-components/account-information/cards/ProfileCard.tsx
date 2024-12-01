@@ -6,11 +6,12 @@ export default function ProfileCard({
 }: {
   profile_information: AccountInformationProfileObject;
 }) {
+  console.log({ profile_information });
   return (
     <div className="rounded-lg border bg-white p-4  pb-10 shadow-lg">
       <div
-        style={{ backgroundImage: profile_information?.image }}
-        className=" h-44  relative rounded-lg p-2 bg-gray-200 "
+        style={{ backgroundImage: `url(${profile_information?.image})` }}
+        className=" h-44 shadow-md relative rounded-lg p-2 bg-center bg-cover  "
       />
       {profile_information && (
         <ul className="mt-3 divide-y rounded-lg bg-gray-50 py-2 px-3 text-gray-600 shadow-sm hover:text-gray-700 hover:shadow">

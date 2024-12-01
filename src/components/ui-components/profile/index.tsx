@@ -25,6 +25,7 @@ export default function ProfileComponent({
     <div className="min-h-full p-4">
       <main className="space-y-6">
         <ProfileHeader admin_information={admin_information} />
+
         <div className=" lg:px-8 px-2 max-w-3xl mx-auto grid grid-cols-1 gap-6  lg:max-w-7xl lg:grid-flow-col-dense lg:grid-cols-3">
           <div className="space-y-6 w-full  lg:col-start-1 lg:col-span-2">
             <LegalInformationBlock legal_information={legal_information} />

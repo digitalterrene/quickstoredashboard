@@ -1,13 +1,6 @@
 import React from "react";
 import { AiOutlineDollar } from "react-icons/ai";
-import {
-  BsGenderFemale,
-  BsGenderMale,
-  BsGlobe2,
-  BsPeople,
-} from "react-icons/bs";
-import { FiBox } from "react-icons/fi";
-import { IoPricetagsOutline } from "react-icons/io5";
+import { BsGenderFemale, BsGenderMale, BsGlobe2 } from "react-icons/bs";
 
 export default function CustomersStatsComponent({ stats }: { stats: any }) {
   return (

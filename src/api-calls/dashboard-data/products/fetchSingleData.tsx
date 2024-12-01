@@ -37,14 +37,14 @@ export async function fetchSingleStoreData(
       console.log("Response not OK:", response.statusText);
       return {
         response: "error",
-        message: `Faiiled to fetch ${requested_key}`,
+        message: `Failed to fetch ${requested_key}`,
       };
     }
   } catch (error: any) {
     console.log("Error fetching data:", error.message);
     return {
       response: "error",
-      message: `Faiiled to add ${error?.message}`,
+      message: `Failed to add ${error?.message}`,
     };
   }
 }

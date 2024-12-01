@@ -1,9 +1,6 @@
 "use client";
 import { updateFrontStoreConfigData } from "@/api-calls/front-store-config/updateFrontStoreConfigData";
-import BannerConfiguration from "@/components/ui-components/front-store-configs/banners/BannerConfiguration";
-import BannerPreview from "@/components/ui-components/front-store-configs/banners/BannerPreview";
-import BannerTemplates from "@/components/ui-components/front-store-configs/banners/BannerTemplates";
-import { useFrontStoreConfig, useSideNavInputs } from "@/context";
+import { useFrontStoreConfig } from "@/context";
 import { useAuthContext } from "@/context/auth-context/AuthContext";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
@@ -12,10 +9,7 @@ import plugin from "grapesjs-tailwind";
 
 import "grapesjs/dist/css/grapes.min.css";
 import { IoSaveOutline } from "react-icons/io5";
-import { TbDeviceDesktop } from "react-icons/tb";
 import { toast } from "react-toastify";
-import FrontStoreConfiguration from "./FrontStoreConfiguration";
-import EasyblocksEditorPage from "./EasyblocksEditorPage";
 
 export default function StoreBannersPage({ response }: { response: any }) {
   const {
@@ -161,7 +155,7 @@ export default function StoreBannersPage({ response }: { response: any }) {
           aria-labelledby="tabs-with-badges-item-1"
         >
           <div key={0}>
-            <EasyblocksEditorPage />
+            Store Banner Comming Soon
             {/* <div id="gjs" className="rounded-lg bg-red-900 p-0"></div> */}
           </div>
         </div>

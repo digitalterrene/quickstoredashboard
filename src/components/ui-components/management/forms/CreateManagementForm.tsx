@@ -77,69 +77,59 @@ const CreateManagementForm = ({ pok }: { pok: string }) => {
   const { closeSidenav, setSidenavInputs } = useSideNavInputs();
   const { user } = useAuthContext();
   const router = useRouter();
-  const handleUploadImage = (image: File, image_type: string) => {
-    const id = toast.loading("Uploading image...");
-    if (image === undefined) {
-      toast.update(id, {
-        render: "Something went wrong",
-        type: "error",
-        isLoading: false,
-      });
-      return;
-    }
-    if (image.type === "image/jpeg" || image.type === "image/png") {
-      const data = new FormData();
-      data.append("file", image);
-      data.append(
-        "upload_preset",
-        `${process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}`
-      );
-      data.append(
-        "cloud_name",
-        `${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`
-      );
-      fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: "post",
-          body: data,
-        }
-      )
-        .then((res) => res.json())
-        .then(async (data) => {
-          toast.update(id, {
-            render: "Image successfully uploaded",
-            type: "success",
-            isLoading: false,
-          });
-          // console.log("Image in the server" + data.secure_url.toString());
 
-          setFormData((prevState) => ({
-            ...prevState,
-            image_url: data.secure_url.toString(),
-          }));
-          //return { image_url: data.secure_url.toString() };
-        })
-        .catch((err) => {
-          toast.update(id, {
-            render: `${err?.message}`,
-            type: "error",
-            isLoading: false,
-          });
-          console.log(err);
+  const handleUploadImage = async (image: File | Blob) => {
+    const id = toast.loading("Uploading image to the server..."); // Show initial loading notification
+
+    try {
+      // Create FormData and append the file
+      const formData = new FormData();
+      formData.append("file", image); // Ensure the key matches the API expectations
+
+      // Send the POST request to the server
+      const res = await fetch("/api/upload-image", {
+        method: "POST",
+        body: formData,
+      });
+
+      // Parse the JSON response
+      const data = await res.json();
+
+      if (res.ok && data.message === "success") {
+        // Handle successful upload
+        toast.update(id, {
+          render: "Image successfully uploaded!",
+          type: "success",
+          isLoading: false,
         });
-    } else {
+
+        // Update form data and inputs with the uploaded image URL
+        setFormData((prevState) => ({
+          ...prevState,
+          image: data.imgUrl, // Assuming `imgUrl` is the key in response
+        }));
+      } else {
+        // Handle server-side errors
+        toast.update(id, {
+          render: data.error || "Error uploading image.",
+          type: "error",
+          isLoading: false,
+        });
+      }
+    } catch (error: any) {
+      // Handle client-side errors
       toast.update(id, {
-        render: "Please select an image",
+        render: error.message || "Something went wrong.",
         type: "error",
         isLoading: false,
       });
-      return;
+      console.error("Upload error:", error);
+    } finally {
+      // Dismiss toast after a delay
+      setTimeout(() => toast.dismiss(id), 6000);
     }
-    setTimeout(() => {
-      toast.dismiss();
-    }, 6000);
   };
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -240,15 +230,15 @@ const CreateManagementForm = ({ pok }: { pok: string }) => {
               alt="Image Description"
             />
             <div className="flex gap-x-2">
-              <label htmlFor="uploadFile1">
+              <label htmlFor="uploadFileCreateManagementForm">
                 <input
                   type="file"
                   onChange={async (e) => {
                     if (e.target.files && e.target.files[0]) {
-                      handleUploadImage(e.target.files[0], "image");
+                      handleUploadImage(e.target.files[0]);
                     }
                   }}
-                  id="uploadFile1"
+                  id="uploadFileCreateManagementForm"
                   className="hidden"
                 />
                 <span className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800">

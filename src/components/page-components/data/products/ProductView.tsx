@@ -1,11 +1,8 @@
 "use client";
 import { useState } from "react";
-import useNavigation from "@/utils/handleNavigate";
 import { useAuthContext } from "@/context/auth-context/AuthContext";
-import { IoHeartOutline } from "react-icons/io5";
+
 import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
-import { useRouter } from "next/navigation";
 
 type Variation = {
   data_type: string;

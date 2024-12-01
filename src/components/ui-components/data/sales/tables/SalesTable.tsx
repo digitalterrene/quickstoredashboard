@@ -17,12 +17,13 @@ import {
   BsFileEarmarkPdf,
   BsFiletypeCsv,
 } from "react-icons/bs";
+import DataNotFound from "@/components/misc-components/DataNotFound";
 
 export default function SalesTable({ sales }: { sales: SalesObjectType[] }) {
   const { openSidenav, setSidenavInputs, setAddItem } = useSideNavInputs();
   const { user } = useAuthContext();
   const [ordersPerPage, setordersPerPage] = useState(5);
-  console.log({ orders_array: sales });
+
   const [filteredOrders, setFilteredOrders] =
     useState<SalesObjectType[]>(sales);
   const [selectedIDs, setSelectedIDs] = useState<string[]>([]);
@@ -313,210 +314,215 @@ export default function SalesTable({ sales }: { sales: SalesObjectType[] }) {
                     </div>
                   </div>
                 </div>
+                {currentOrders?.length === 0 ? (
+                  <DataNotFound data="sales" />
+                ) : (
+                  <table className="  divide-y w-full divide-gray-200 dark:divide-neutral-700">
+                    <thead className="bg-gray-50 dark:bg-neutral-800">
+                      <tr>
+                        <th scope="col" className="pl-3 py-3 text-start">
+                          <input
+                            type="checkbox"
+                            checked={
+                              selectedIDs.length === currentOrders.length
+                            }
+                            onChange={handleSelectAll}
+                            className="shrink-0 mt-0.5 h-4 w-4 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                            id="hs-default-checkbox"
+                          />
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 whitespace-nowrap text-start"
+                        >
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Sales ID
+                            </span>
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-start">
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Customer
+                            </span>
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-start">
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Email
+                            </span>
+                          </div>
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 whitespace-nowrap text-start"
+                        >
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Amount
+                            </span>
+                          </div>
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3  whitespace-nowrap text-start"
+                        >
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Invoice ID
+                            </span>
+                          </div>
+                        </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 whitespace-nowrap text-start"
+                        >
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Order ID
+                            </span>
+                          </div>
+                        </th>
 
-                <table className="  divide-y w-full divide-gray-200 dark:divide-neutral-700">
-                  <thead className="bg-gray-50 dark:bg-neutral-800">
-                    <tr>
-                      <th scope="col" className="pl-3 py-3 text-start">
-                        <input
-                          type="checkbox"
-                          checked={selectedIDs.length === currentOrders.length}
-                          onChange={handleSelectAll}
-                          className="shrink-0 mt-0.5 h-4 w-4 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                          id="hs-default-checkbox"
-                        />
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 whitespace-nowrap text-start"
-                      >
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Sales ID
-                          </span>
-                        </div>
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-start">
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Customer
-                          </span>
-                        </div>
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-start">
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Email
-                          </span>
-                        </div>
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 whitespace-nowrap text-start"
-                      >
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Amount
-                          </span>
-                        </div>
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3  whitespace-nowrap text-start"
-                      >
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Invoice ID
-                          </span>
-                        </div>
-                      </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 whitespace-nowrap text-start"
-                      >
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Order ID
-                          </span>
-                        </div>
-                      </th>
+                        <th
+                          scope="col"
+                          className="px-6 py-3 whitespace-nowrap text-start"
+                        >
+                          <div className="flex items-center gap-x-2">
+                            <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
+                              Date Created
+                            </span>
+                          </div>
+                        </th>
+                        <th scope="col" className="px-6 py-3 text-start"></th>
+                      </tr>
+                    </thead>
 
-                      <th
-                        scope="col"
-                        className="px-6 py-3 whitespace-nowrap text-start"
-                      >
-                        <div className="flex items-center gap-x-2">
-                          <span className="text-xs font-semibold uppercase tracking-wide text-gray-800 dark:text-neutral-200">
-                            Date Created
-                          </span>
-                        </div>
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-start"></th>
-                    </tr>
-                  </thead>
+                    <tbody className="divide-y overflow-x-auto divide-gray-200 dark:divide-neutral-700">
+                      {currentOrders?.map(
+                        ({
+                          sale_number,
+                          sale_date,
+                          buyer_name,
+                          buyer_address,
+                          buyer_contact,
+                          payment_method,
+                          payment_terms,
+                          tax_rate,
+                          subtotal,
+                          invoice_id,
+                          total_amount,
+                          order_id,
+                          _id,
+                        }) => (
+                          <tr>
+                            <td className="size-px pl-3 whitespace-nowrap">
+                              <input
+                                type="checkbox"
+                                checked={selectedIDs.includes(_id || "")}
+                                onChange={(e) => handleSelectItem(e, _id || "")}
+                                className="shrink-0 mt-0.5 h-4 w-4 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                                id="hs-default-checkbox"
+                              />
+                            </td>
 
-                  <tbody className="divide-y overflow-x-auto divide-gray-200 dark:divide-neutral-700">
-                    {currentOrders?.map(
-                      ({
-                        sale_number,
-                        sale_date,
-                        buyer_name,
-                        buyer_address,
-                        buyer_contact,
-                        payment_method,
-                        payment_terms,
-                        tax_rate,
-                        subtotal,
-                        invoice_id,
-                        total_amount,
-                        order_id,
-                        _id,
-                      }) => (
-                        <tr>
-                          <td className="size-px pl-3 whitespace-nowrap">
-                            <input
-                              type="checkbox"
-                              checked={selectedIDs.includes(_id || "")}
-                              onChange={(e) => handleSelectItem(e, _id || "")}
-                              className="shrink-0 mt-0.5 h-4 w-4 border-gray-200 rounded text-blue-600 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
-                              id="hs-default-checkbox"
-                            />
-                          </td>
-
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-2">
-                              <a
-                                className="text-sm text-blue-600 decoration-2 hover:underline dark:text-blue-500"
-                                href="#"
-                              >
-                                #{sale_number || "SALES_ID"}
-                              </a>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-2">
-                              <span className="text-sm text-gray-600 dark:text-neutral-400">
-                                {buyer_name || "buyer's name"}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-2">
-                              <span className="text-sm text-gray-600 dark:text-neutral-400">
-                                {buyer_contact || "buyer's contactc"}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-2">
-                              <span className="text-sm text-gray-600 dark:text-neutral-400">
-                                {total_amount || "total_amount"}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-2">
-                              <span className="text-sm text-gray-600 dark:text-neutral-400">
-                                {invoice_id || "invoice_id"}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-2">
-                              <span className="text-sm text-gray-600 dark:text-neutral-400">
-                                {order_id || "order_id"}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="size-px whitespace-nowrap">
-                            <div className="px-6 py-2">
-                              <span className="text-sm text-gray-600 dark:text-neutral-400">
-                                {sale_date || "sale_date"}
-                              </span>
-                            </div>
-                          </td>
-                          <td className="size-px   whitespace-nowrap p-6 align-top">
-                            <div className=" ">
-                              <div className=" gap-3 flex justify-start  ">
-                                <button
-                                  data-hs-overlay="#hs-overlay-body-scrolling"
-                                  type="button"
-                                  onClick={() => {
-                                    setAddItem("view_sale");
-                                    setSidenavInputs({
-                                      sale_number,
-                                      sale_date,
-                                      buyer_name,
-                                      buyer_address,
-                                      buyer_contact,
-                                      payment_method,
-                                      payment_terms,
-                                      tax_rate,
-                                      subtotal,
-                                      invoice_id,
-                                      total_amount,
-                                      order_id,
-                                      _id,
-                                    });
-                                    openSidenav();
-                                  }}
-                                  className="block"
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-2">
+                                <a
+                                  className="text-sm text-blue-600 decoration-2 hover:underline dark:text-blue-500"
+                                  href="#"
                                 >
-                                  <span className="  py-1.5">
-                                    <span className="py-1 px-2 inline-flex justify-center items-center gap-2 rounded-lg border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
-                                      <GrView className="text-lg" />
-                                      View
-                                    </span>
-                                  </span>
-                                </button>
+                                  #{sale_number || "SALES_ID"}
+                                </a>
                               </div>
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    )}
-                  </tbody>
-                </table>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-2">
+                                <span className="text-sm text-gray-600 dark:text-neutral-400">
+                                  {buyer_name || "buyer's name"}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-2">
+                                <span className="text-sm text-gray-600 dark:text-neutral-400">
+                                  {buyer_contact || "buyer's contactc"}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-2">
+                                <span className="text-sm text-gray-600 dark:text-neutral-400">
+                                  {total_amount || "total_amount"}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-2">
+                                <span className="text-sm text-gray-600 dark:text-neutral-400">
+                                  {invoice_id || "invoice_id"}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-2">
+                                <span className="text-sm text-gray-600 dark:text-neutral-400">
+                                  {order_id || "order_id"}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="size-px whitespace-nowrap">
+                              <div className="px-6 py-2">
+                                <span className="text-sm text-gray-600 dark:text-neutral-400">
+                                  {sale_date || "sale_date"}
+                                </span>
+                              </div>
+                            </td>
+                            <td className="size-px   whitespace-nowrap p-6 align-top">
+                              <div className=" ">
+                                <div className=" gap-3 flex justify-start  ">
+                                  <button
+                                    data-hs-overlay="#hs-overlay-body-scrolling"
+                                    type="button"
+                                    onClick={() => {
+                                      setAddItem("view_sale");
+                                      setSidenavInputs({
+                                        sale_number,
+                                        sale_date,
+                                        buyer_name,
+                                        buyer_address,
+                                        buyer_contact,
+                                        payment_method,
+                                        payment_terms,
+                                        tax_rate,
+                                        subtotal,
+                                        invoice_id,
+                                        total_amount,
+                                        order_id,
+                                        _id,
+                                      });
+                                      openSidenav();
+                                    }}
+                                    className="block"
+                                  >
+                                    <span className="  py-1.5">
+                                      <span className="py-1 px-2 inline-flex justify-center items-center gap-2 rounded-lg border font-medium bg-white text-gray-700 shadow-sm align-middle hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-blue-600 transition-all text-sm dark:bg-neutral-900 dark:hover:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-400 dark:hover:text-white dark:focus:ring-offset-gray-800">
+                                        <GrView className="text-lg" />
+                                        View
+                                      </span>
+                                    </span>
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      )}
+                    </tbody>
+                  </table>
+                )}
 
                 <div className="px-6 py-4 grid gap-3 md:flex md:justify-between md:items-center border-t border-gray-200 dark:border-neutral-700">
                   <div className="max-w-sm w-24 space-y-3">

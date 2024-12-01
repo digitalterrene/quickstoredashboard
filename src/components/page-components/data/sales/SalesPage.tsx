@@ -33,14 +33,7 @@ export default function SalesPage({
 }) {
   console.log({ customers });
   const { addItem, closeSidenav, isSidenavOpen } = useSideNavInputs();
-  useEffect(() => {
-    if (response?.response === "error") {
-      toast.error(`${response?.message}`);
-    }
-    setTimeout(() => {
-      toast.dismiss();
-    }, 6000);
-  }, [response?.response]);
+
   const stats = {
     customers: calculateTotalCustomers(response?.data || []),
     invoices: calculateTotalOrders(response?.data || []),

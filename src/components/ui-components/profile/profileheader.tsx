@@ -22,7 +22,8 @@ export default function ProfileHeader({ admin_information }: any) {
     <div className="relative pt-40 ">
       <img
         src={
-          banner || "https://cdn-icons-png.flaticon.com/128/3177/3177440.png"
+          banner ||
+          "https://img.freepik.com/free-vector/business-presentation-banner-with-blue-geometric-shape_1017-32330.jpg?t=st=1733049988~exp=1733053588~hmac=a116b3a00f2df0d7e122e0c2a2bcc8fe5c3e61859d6dc8caa312e29571d7a872&w=900"
         }
         alt="cover-image"
         className="w-full object-cover  rounded-lg object-center absolute top-0 left-0 z-0 h-60"

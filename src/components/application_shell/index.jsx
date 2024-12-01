@@ -9,7 +9,7 @@ import { GoHome } from "react-icons/go";
 import { ToastContainer } from "react-toastify";
 import useNavigation from "@/utils/handleNavigate";
 import { front_store_routes } from "@/data/front-store-components-config";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
+import { FaChevronLeft, FaChevronRight, FaGithub } from "react-icons/fa6";
 import { useSideNavInputs } from "@/context";
 import {
   IoMdArrowForward,
@@ -17,18 +17,21 @@ import {
   IoIosLogOut,
   IoIosLogIn,
 } from "react-icons/io";
-import { IoSettingsOutline, IoStorefrontOutline } from "react-icons/io5";
+import { IoSettingsOutline } from "react-icons/io5";
 import {
   MdOutlineAdminPanelSettings,
-  MdOutlineShoppingCart,
   MdOutlineSpaceDashboard,
 } from "react-icons/md";
 import { HiOutlineBookOpen } from "react-icons/hi2";
 import { CiShare1 } from "react-icons/ci";
-import { AiOutlineCustomerService } from "react-icons/ai";
+import { AiOutlineCustomerService, AiOutlineRead } from "react-icons/ai";
 import { signOutWithGoogle } from "@/libs/firebase/auth";
 import { removeSession } from "@/actions/auth-actions";
 import { HiMenu } from "react-icons/hi";
+
+import { BsGlobe } from "react-icons/bs";
+import { VscGithubAlt } from "react-icons/vsc";
+import { PiLinkedinLogoBold } from "react-icons/pi";
 
 export default function ApplicationShell({ children, session }) {
   const pathname = usePathname();
@@ -348,15 +351,15 @@ export default function ApplicationShell({ children, session }) {
       <div
         id="application-sidebar"
         className={`hs-overlay scrollbar-thumb-gray-300 scrollbar-thin scrollbar-thumb-rounded scrollbar-track-rounded-2xl active:scrollbar-thumb-sky-400 scrollbar-thumb-rounded-full hover:scrollbar-thumb-blue-500 scrollbar-track-gray-100 h-full overflow-y-auto [--auto-close:lg]
-  hs-overlay-open:translate-x-0     
-  -translate-x-full transition-all duration-300 transform
-  w-${toggleSidebarState ? "[255px]" : "fit"}
-  hidden
-  fixed inset-y-0 start-0 z-[60]
-  bg-white border-e border-gray-200
-  lg:block lg:translate-x-0 lg:end-auto lg:bottom-0
-  dark:bg-neutral-800 dark:border-neutral-700
- `}
+                hs-overlay-open:translate-x-0     
+                -translate-x-full transition-all duration-300 transform
+                w-${toggleSidebarState ? "[255px]" : "fit"}
+                hidden
+                fixed inset-y-0 start-0 z-[60]
+                bg-white border-e border-gray-200
+                lg:block lg:translate-x-0 lg:end-auto lg:bottom-0
+                dark:bg-neutral-800 dark:border-neutral-700
+            `}
       >
         <div className={`px-${!toggleSidebarState ? "3" : "6"}  pr-2 pt-3`}>
           <div className="flex justify-between items-center">
@@ -575,6 +578,53 @@ export default function ApplicationShell({ children, session }) {
               </div>
             </div>
           </div>
+          <footer className="mt-auto py-3 border-t ">
+            <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="mt-auto w-full max-w-[85rem]  px-4 sm:px-6 lg:px-8 mx-auto">
+                <div className="flex w-full justify-between    items-center gap-5">
+                  <div>
+                    <a
+                      className="flex-none text-xl font-semibold text-black focus:outline-none dark:text-white"
+                      href="/"
+                      aria-label="Brand"
+                    >
+                      Quick Store Dashboard
+                    </a>
+                  </div>
+                  <div className="md:text-end items-center space-x-4">
+                    <a
+                      target="_blank"
+                      className=" inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                      href="https://www.linkedin.com/in/larry-kingstone-71516824a/"
+                    >
+                      <PiLinkedinLogoBold className="text-xl" />
+                    </a>
+                    <a
+                      target="_blank"
+                      className=" inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                      href="https://larrykingstone.com"
+                    >
+                      <BsGlobe className="text-xl" />
+                    </a>
+                    <a
+                      target="_blank"
+                      className=" inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                      href="https://larrykingstonedocs.vercel.app/"
+                    >
+                      <AiOutlineRead className="text-xl" />
+                    </a>
+                    <a
+                      target="_blank"
+                      className=" inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-full border border-transparent text-gray-500 hover:bg-gray-50 focus:outline-none focus:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-700 dark:focus:bg-neutral-700"
+                      href="https://github.com/digitalterrene"
+                    >
+                      <VscGithubAlt className="text-xl" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </footer>
         </div>
       </div>
     </div>

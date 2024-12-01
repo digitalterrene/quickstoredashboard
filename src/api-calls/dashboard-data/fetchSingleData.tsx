@@ -42,7 +42,7 @@ export async function fetchMultipleStoreData(
     console.log("Error fetching data:", error.message);
     return {
       response: "error",
-      message: `Faiiled to add ${error?.message}`,
+      message: `Failed to add ${error?.message}`,
     };
   }
 }

@@ -81,94 +81,85 @@ export default function EditProduct({
     inputs?.images && inputs.images.length > 0 ? inputs.images : []
   );
 
-  const handleUploadImage = (image: File, image_type: string) => {
-    const id = toast.loading("Uploading image...");
-    if (image === undefined) {
-      toast.update(id, {
-        render: "Something went wrong",
-        type: "error",
-        isLoading: false,
-      });
-      return;
-    }
-    if (image.type === "image/jpeg" || image.type === "image/png") {
-      const inputs = new FormData();
-      inputs.append("file", image);
-      inputs.append(
-        "upload_preset",
-        `${process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}`
-      );
-      inputs.append(
-        "cloud_name",
-        `${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`
-      );
-      fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: "post",
-          body: inputs,
-        }
-      )
-        .then((res) => res.json())
-        .then(async (files_inputs) => {
-          toast.update(id, {
-            render: "Image successfully uploaded",
-            type: "success",
-            isLoading: false,
-          });
-          // console.log("Image in the server" + inputs.secure_url.toString());
-          if (!product?.image) {
-            setUpdatedInputs((prev) => [
-              ...prev,
-              { key: "image", value: `${files_inputs.secure_url.toString()}` },
-            ]);
-          }
+  const handleUploadImage = async (image: File | Blob) => {
+    const id = toast.loading("Uploading image to the server..."); // Show initial loading notification
 
-          setProductImages((prevState) => [
-            ...prevState,
-            files_inputs.secure_url.toString(),
-          ]);
-          setSidenavInputs({
-            images: [files_inputs.secure_url.toString(), ...productImages],
-          });
-          keysToUpdate.push({
-            key: "images",
-            value: [files_inputs.secure_url.toString(), ...productImages],
-          });
+    try {
+      // Create FormData and append the file
+      const formData = new FormData();
+      formData.append("file", image); // Ensure the key matches the API expectations
+
+      // Send the POST request to the server
+      const res = await fetch("/api/upload-image", {
+        method: "POST",
+        body: formData,
+      });
+
+      // Parse the JSON response
+      const data = await res.json();
+
+      if (res.ok && data.message === "success") {
+        // Handle successful upload
+        toast.update(id, {
+          render: "Image successfully uploaded!",
+          type: "success",
+          isLoading: false,
+        });
+
+        // Update form data and inputs with the uploaded image URL
+
+        if (!product?.image) {
           setUpdatedInputs((prev) => [
             ...prev,
             {
-              key: "images",
-              value: [files_inputs.secure_url.toString(), ...productImages],
+              key: "image",
+              value: `${data.imgUrl.toString()}`,
             },
           ]);
+        }
 
-          setInputs((prevState) => ({
-            ...prevState,
-            images: [files_inputs.secure_url.toString(), ...productImages],
-          }));
-          //return { image_url: inputs.secure_url.toString() };
-        })
-        .catch((err) => {
-          toast.update(id, {
-            render: `${err?.message}`,
-            type: "error",
-            isLoading: false,
-          });
-          console.log(err);
+        setProductImages((prevState) => [...prevState, data.imgUrl.toString()]);
+        setSidenavInputs({
+          images: [data.imgUrl.toString(), ...productImages],
         });
-    } else {
+        keysToUpdate.push({
+          key: "images",
+          value: [data.imgUrl.toString(), ...productImages],
+        });
+        setUpdatedInputs((prev) => [
+          ...prev,
+          {
+            key: "images",
+            value: [data.imgUrl.toString(), ...productImages],
+          },
+        ]);
+
+        setInputs((prevState) => ({
+          ...prevState,
+          images: [data.imgUrl.toString(), ...productImages],
+        }));
+      } else {
+        // Handle server-side errors
+        toast.update(id, {
+          render: data.error || "Error uploading image.",
+          type: "error",
+          isLoading: false,
+        });
+      }
+    } catch (error: any) {
+      // Handle client-side errors
       toast.update(id, {
-        render: "Please select an image",
+        render: error.message || "Something went wrong.",
         type: "error",
         isLoading: false,
       });
-      return;
+      console.error("Upload error:", error);
+    } finally {
+      // Dismiss toast after a delay
+      setTimeout(() => toast.dismiss(id), 6000);
     }
-    setTimeout(() => {
-      toast.dismiss();
-    }, 6000);
   };
+
   //fetching variations for the woocomerce product
   const init_suppliers_configurations_response: any[] =
     suppliers_configurations_response || [];
@@ -443,7 +434,7 @@ export default function EditProduct({
                 name="variations-image"
                 onChange={async (e) => {
                   if (e.target.files && e.target.files[0]) {
-                    handleUploadImage(e.target.files[0], "image");
+                    handleUploadImage(e.target.files[0]);
                   }
                 }}
                 id="variations-image"
@@ -619,7 +610,7 @@ export default function EditProduct({
             </div>
 
             <label
-              htmlFor="uploadFile1"
+              htmlFor="uploadFile-EditProduct"
               className="bg-white h-32 text-gray-500 font-semibold text-base rounded max-w-md  flex flex-col items-center justify-center cursor-pointer border-2 border-gray-300 border-dashed mx-auto font-[sans-serif]"
             >
               <IoCloudUploadOutline className="text-4xl" />
@@ -628,10 +619,10 @@ export default function EditProduct({
                 type="file"
                 onChange={async (e) => {
                   if (e.target.files && e.target.files[0]) {
-                    handleUploadImage(e.target.files[0], "images");
+                    handleUploadImage(e.target.files[0]);
                   }
                 }}
-                id="uploadFile1"
+                id="uploadFile-EditProduct"
                 className="hidden"
               />
               <p className="text-xs font-medium text-gray-400 mt-2">

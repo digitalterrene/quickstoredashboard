@@ -1,36 +1,11 @@
 import { toast } from "react-toastify";
 import { useAuthContext } from "@/context/auth-context/AuthContext";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { updateAccountInformationData } from "@/api-calls/account-information/updateAccountInformationData";
 import { BiSave } from "react-icons/bi";
 import { updateAdminData } from "@/api-calls/admin-actions/updateAdminData";
+import { AdminObjectType, intialInputs } from "@/ts-types/admin-actions";
 
-type AdminObjectType = {
-  email?: string;
-  image?: string;
-  banner?: string;
-  password?: string;
-  username?: string;
-  tagline?: string;
-  description?: string;
-  user_id?: string;
-  access_key?: string;
-  security_key?: string;
-  _id?: string;
-};
-const intialInputs: AdminObjectType = {
-  email: "",
-  username: "",
-  image: "",
-  banner: "",
-  password: "",
-  access_key: "",
-  security_key: "",
-  user_id: "",
-  tagline: "",
-  description: "",
-};
 export default function AdminActionsComponent({ admin_information }: any) {
   const [formData, setFormData] = useState<AdminObjectType>({
     ...intialInputs,
@@ -47,7 +22,7 @@ export default function AdminActionsComponent({ admin_information }: any) {
 
   const { user } = useAuthContext();
 
-  const handleUploadImage = async (image: File, image_type: string) => {
+  const handleUploadImage = async (image: File | Blob, image_type: string) => {
     const id = toast.loading(`Uploading ${image_type}`);
 
     if (!image) {
@@ -60,30 +35,30 @@ export default function AdminActionsComponent({ admin_information }: any) {
     }
 
     if (image.type === "image/jpeg" || image.type === "image/png") {
-      const formData = new FormData();
-      formData.append("file", image);
-      formData.append(
-        "upload_preset",
-        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || ""
-      );
-      formData.append(
-        "cloud_name",
-        process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || ""
-      );
-
       try {
-        const res = await fetch(
-          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
+        // Create FormData and append the file
+        const formData = new FormData();
+        formData.append("file", image); // Ensure the key matches the API expectations
 
-        const files_formData = await res.json();
+        // Send the POST request to the server
+        const res = await fetch("/api/upload-image", {
+          method: "POST",
+          body: formData,
+        });
 
-        if (res.ok) {
-          const imageUrl = files_formData.secure_url.toString();
+        // Parse the JSON response
+        const data = await res.json();
+
+        if (res.ok && data.message === "success") {
+          // Handle successful upload
+          toast.update(id, {
+            render: "Image successfully uploaded!",
+            type: "success",
+            isLoading: false,
+          });
+
+          // Update form data and inputs with the uploaded image URL
+          const imageUrl = data.imgUrl.toString();
           console.log({ [image_type]: imageUrl });
           setFormData((prevState) => ({
             ...prevState,
@@ -126,129 +101,26 @@ export default function AdminActionsComponent({ admin_information }: any) {
             });
           }
         } else {
+          // Handle server-side errors
           toast.update(id, {
-            render: `${files_formData?.error?.message || "Upload failed"}`,
+            render: data.error || "Error uploading image.",
             type: "error",
             isLoading: false,
           });
         }
-      } catch (err: any) {
+      } catch (error: any) {
+        // Handle client-side errors
         toast.update(id, {
-          render: `${err?.message || "An error occurred"}`,
+          render: error.message || "Something went wrong.",
           type: "error",
           isLoading: false,
         });
-        console.error(err);
+        console.error("Upload error:", error);
+      } finally {
+        // Dismiss toast after a delay
+        setTimeout(() => toast.dismiss(id), 6000);
       }
-    } else {
-      toast.update(id, {
-        render: "Please select a valid image",
-        type: "error",
-        isLoading: false,
-      });
     }
-
-    setTimeout(() => {
-      toast.dismiss();
-    }, 6000);
-  };
-
-  const handleUploadBanner = async (image: File) => {
-    const id = toast.loading("Uploading banner");
-
-    if (!image) {
-      toast.update(id, {
-        render: "Something went wrong",
-        type: "error",
-        isLoading: false,
-      });
-      return;
-    }
-
-    if (image.type === "image/jpeg" || image.type === "image/png") {
-      const formData = new FormData();
-      formData.append("file", image);
-      formData.append(
-        "upload_preset",
-        process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || ""
-      );
-      formData.append(
-        "cloud_name",
-        process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || ""
-      );
-
-      try {
-        const res = await fetch(
-          `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-          {
-            method: "POST",
-            body: formData,
-          }
-        );
-
-        const files_formData = await res.json();
-
-        if (res.ok) {
-          const imageUrl = files_formData.secure_url.toString();
-
-          setFormData((prevState) => ({
-            ...prevState,
-            banner: imageUrl,
-          }));
-          setUpdatedInputs((prevState: any) => [
-            ...prevState,
-            { key: "banner", value: imageUrl },
-          ]);
-
-          // Update the user data on your server
-          const updateResponse = await updateAdminData(
-            user?._id,
-            user?._id,
-            user?.token,
-            "banner",
-            imageUrl
-          );
-
-          if (updateResponse && updateResponse.response === "ok") {
-            toast.update(id, {
-              render: "Banner successfully uploaded and updated",
-              type: "success",
-              isLoading: false,
-            });
-            router.refresh();
-          } else {
-            toast.update(id, {
-              render: "Failed to update banner on the server",
-              type: "error",
-              isLoading: false,
-            });
-          }
-        } else {
-          toast.update(id, {
-            render: `${files_formData?.error?.message || "Upload failed"}`,
-            type: "error",
-            isLoading: false,
-          });
-        }
-      } catch (err: any) {
-        toast.update(id, {
-          render: `${err?.message || "An error occurred"}`,
-          type: "error",
-          isLoading: false,
-        });
-        console.error(err);
-      }
-    } else {
-      toast.update(id, {
-        render: "Please select a valid image",
-        type: "error",
-        isLoading: false,
-      });
-    }
-
-    setTimeout(() => {
-      toast.dismiss();
-    }, 6000);
   };
   // Update form data and track updated inputs
   const handleInputChange = (
@@ -399,7 +271,7 @@ export default function AdminActionsComponent({ admin_information }: any) {
                         alt="Image Description"
                       />
                       <div className="flex gap-x-2">
-                        <label htmlFor="uploadFile1">
+                        <label htmlFor="uploadFile-AdminActions">
                           <input
                             type="file"
                             onChange={async (e) => {
@@ -407,7 +279,7 @@ export default function AdminActionsComponent({ admin_information }: any) {
                                 handleUploadImage(e.target.files[0], "image");
                               }
                             }}
-                            id="uploadFile1"
+                            id="uploadFile-AdminActions"
                             className="hidden"
                           />
                           <span className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800">
@@ -459,7 +331,10 @@ export default function AdminActionsComponent({ admin_information }: any) {
                   </div>
                   <div className="sm:col-span-4">
                     <div className="flex w-full ">
-                      <label htmlFor="uploadFile2" className="w-full">
+                      <label
+                        htmlFor="uploadFile-AdminActionsComponent"
+                        className="w-full"
+                      >
                         <input
                           type="file"
                           onChange={async (e) => {
@@ -467,7 +342,7 @@ export default function AdminActionsComponent({ admin_information }: any) {
                               handleUploadImage(e.target.files[0], "banner");
                             }
                           }}
-                          id="uploadFile2"
+                          id="uploadFile-AdminActionsComponent"
                           className="hidden"
                         />
                         <span className="py-2 pl-3 w-full   inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200  text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800">

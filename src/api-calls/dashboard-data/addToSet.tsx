@@ -36,14 +36,14 @@ export async function addToSet(
       console.log("Response not OK:", response.statusText);
       return {
         response: "error",
-        message: `Faiiled to add ${data?.message}`,
+        message: `Failed to add ${data?.message}`,
       };
     }
   } catch (error: any) {
     console.log("Error addinng data:", error.message);
     return {
       response: "error",
-      message: `Faiiled to add ${error?.message}`,
+      message: `Failed to add ${error?.message}`,
     };
   }
 }

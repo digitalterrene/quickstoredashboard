@@ -32,72 +32,63 @@ export default function BannerConfiguration() {
   const { valueToHex, isGradient } = useColorPicker(color, setColor);
   const [inputs, setInputs] =
     useState<BannerConfigurationInputsType>(initialInputs);
-  const handleUploadImage = (image: File, image_type: string) => {
-    const id = toast.loading("Uploading image...");
-    if (image === undefined) {
-      toast.update(id, {
-        render: "Something went wrong",
-        type: "error",
-        isLoading: false,
+
+  const handleUploadImage = async (image: File | Blob, image_type: string) => {
+    const id = toast.loading("Uploading image to the server..."); // Show initial loading notification
+
+    try {
+      // Create FormData and append the file
+      const formData = new FormData();
+      formData.append("file", image); // Ensure the key matches the API expectations
+
+      // Send the POST request to the server
+      const res = await fetch("/api/upload-image", {
+        method: "POST",
+        body: formData,
       });
-      return;
-    }
-    if (image.type === "image/jpeg" || image.type === "image/png") {
-      const data = new FormData();
-      data.append("file", image);
-      data.append(
-        "upload_preset",
-        `${process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}`
-      );
-      data.append(
-        "cloud_name",
-        `${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`
-      );
-      fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: "post",
-          body: data,
-        }
-      )
-        .then((res) => res.json())
-        .then(async (data) => {
-          toast.update(id, {
-            render: "Image successfully uploaded",
-            type: "success",
-            isLoading: false,
-          });
-          // console.log("Image in the server" + data.secure_url.toString());
-          if (image_type === "image") {
-            setFrontStoreConfigInputs({
-              store_logo: data.secure_url.toString(),
-            });
-          } else {
-            setFrontStoreConfigInputs({
-              background_image: data.secure_url.toString(),
-            });
-          }
-          //return { image_url: data.secure_url.toString() };
-        })
-        .catch((err) => {
-          toast.update(id, {
-            render: `${err?.message}`,
-            type: "error",
-            isLoading: false,
-          });
-          console.log(err);
+
+      // Parse the JSON response
+      const data = await res.json();
+
+      if (res.ok && data.message === "success") {
+        // Handle successful upload
+        toast.update(id, {
+          render: "Image successfully uploaded!",
+          type: "success",
+          isLoading: false,
         });
-    } else {
+
+        // Update form data and inputs with the uploaded image URL
+
+        if (image_type === "image") {
+          setFrontStoreConfigInputs({
+            store_logo: data.imgUrl.toString(),
+          });
+        } else {
+          setFrontStoreConfigInputs({
+            background_image: data.imgUrl.toString(),
+          });
+        }
+      } else {
+        // Handle server-side errors
+        toast.update(id, {
+          render: data.error || "Error uploading image.",
+          type: "error",
+          isLoading: false,
+        });
+      }
+    } catch (error: any) {
+      // Handle client-side errors
       toast.update(id, {
-        render: "Please select an image",
+        render: error.message || "Something went wrong.",
         type: "error",
         isLoading: false,
       });
-      return;
+      console.error("Upload error:", error);
+    } finally {
+      // Dismiss toast after a delay
+      setTimeout(() => toast.dismiss(id), 6000);
     }
-    setTimeout(() => {
-      toast.dismiss();
-    }, 6000);
   };
 
   return (

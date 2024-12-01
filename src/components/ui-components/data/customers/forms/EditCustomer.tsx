@@ -59,73 +59,63 @@ export default function EditCustomer() {
   const keysToUpdate: { key: keyof CustomerObjectType; value: any }[] = [];
 
   const { user } = useAuthContext();
-  const handleUploadImage = (image: File, image_type: string) => {
-    const id = toast.loading("Uploading image...");
-    if (image === undefined) {
-      toast.update(id, {
-        render: "Something went wrong",
-        type: "error",
-        isLoading: false,
-      });
-      return;
-    }
-    if (image.type === "image/jpeg" || image.type === "image/png") {
-      const inputs = new FormData();
-      inputs.append("file", image);
-      inputs.append(
-        "upload_preset",
-        `${process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET}`
-      );
-      inputs.append(
-        "cloud_name",
-        `${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}`
-      );
-      fetch(
-        `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
-        {
-          method: "post",
-          body: inputs,
-        }
-      )
-        .then((res) => res.json())
-        .then(async (files_inputs) => {
-          toast.update(id, {
-            render: "Image successfully uploaded",
-            type: "success",
-            isLoading: false,
-          });
-          // console.log("Image in the server" + inputs.secure_url.toString());
+  const handleUploadImage = async (image: File | Blob) => {
+    const id = toast.loading("Uploading image to the server..."); // Show initial loading notification
 
-          setInputs((prevState) => ({
-            ...prevState,
-            image: files_inputs.secure_url.toString(),
-          }));
-          //return { image_url: inputs.secure_url.toString() };
-          setUpdatedInputs((prevState) => [
-            ...prevState,
-            { key: "image", value: files_inputs.secure_url.toString() },
-          ]);
-        })
-        .catch((err) => {
-          toast.update(id, {
-            render: `${err?.message}`,
-            type: "error",
-            isLoading: false,
-          });
-          console.log(err);
+    try {
+      // Create FormData and append the file
+      const formData = new FormData();
+      formData.append("file", image); // Ensure the key matches the API expectations
+
+      // Send the POST request to the server
+      const res = await fetch("/api/upload-image", {
+        method: "POST",
+        body: formData,
+      });
+
+      // Parse the JSON response
+      const data = await res.json();
+
+      if (res.ok && data.message === "success") {
+        // Handle successful upload
+        toast.update(id, {
+          render: "Image successfully uploaded!",
+          type: "success",
+          isLoading: false,
         });
-    } else {
+
+        setInputs((prevState) => ({
+          ...prevState,
+          image: data.imgUrl.toString(),
+        }));
+        //return { image_url: inputs.secure_url.toString() };
+        setUpdatedInputs((prevState) => [
+          ...prevState,
+          { key: "image", value: data.imgUrl.toString() },
+        ]);
+        setInputs({ image: data.imgUrl });
+      } else {
+        // Handle server-side errors
+        toast.update(id, {
+          render: data.error || "Error uploading image.",
+          type: "error",
+          isLoading: false,
+        });
+      }
+    } catch (error: any) {
+      // Handle client-side errors
       toast.update(id, {
-        render: "Please select an image",
+        render: error.message || "Something went wrong.",
         type: "error",
         isLoading: false,
       });
-      return;
+      console.error("Upload error:", error);
+    } finally {
+      // Dismiss toast after a delay
+      setTimeout(() => toast.dismiss(id), 6000);
     }
-    setTimeout(() => {
-      toast.dismiss();
-    }, 6000);
   };
+
   const router = useRouter();
 
   const handleInputChange = (
@@ -259,15 +249,15 @@ export default function EditCustomer() {
                     alt="Image Description"
                   />
                   <div className="flex gap-x-2">
-                    <label htmlFor="uploadFile1">
+                    <label htmlFor="uploadFile-EditCustomer">
                       <input
                         type="file"
                         onChange={async (e) => {
                           if (e.target.files && e.target.files[0]) {
-                            handleUploadImage(e.target.files[0], "image");
+                            handleUploadImage(e.target.files[0]);
                           }
                         }}
-                        id="uploadFile1"
+                        id="uploadFile-EditCustomer"
                         className="hidden"
                       />
                       <span className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-800 dark:border-neutral-700 dark:text-white dark:hover:bg-neutral-800">
